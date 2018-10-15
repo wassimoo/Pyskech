@@ -7,9 +7,11 @@
     },
 
     "structure": {
-        "EST": {
+        "EST, DewPoint": {
             "$file": "path/to/class/file.py",
-            "$class": "if_not_defined_filename_is_the_default_value"
+            "$class": "if_not_defined_filename_is_the_default_value",
+            "$load": "load_to_object",
+            "$extract": "extract_from_object"
         },
         "Humidity": 0.0,
         "Sea Level": {
@@ -35,7 +37,7 @@
             "async": true
         },
         {
-            "$database": {
+            "database": {
                 "type": "ORACLE",
                 "host": "",
                 "port": "",
