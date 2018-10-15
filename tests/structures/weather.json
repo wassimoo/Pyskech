@@ -1,0 +1,48 @@
+{
+    "input": {
+        "url":"https://example.com/data/iris.csv",
+        "format" : "CSV",
+        "encoding" : "UTF-16",
+        "async" : true
+    },
+
+    "structure": {
+        "EST": {
+            "$file": "path/to/class/file.py",
+            "$class": "if_not_defined_filename_is_the_default_value"
+        },
+        "Humidity": 0.0,
+        "Sea Level": {
+            "$type": "float",
+            "$default": 30,
+            "$options": {
+                "$obj.Humidity<0": 0,
+                "<30": "__ignore",
+                "$obj.Visibility": "__toInt()"
+            }
+        },
+        "{Navigation}": {
+            "CloudCover": 0,
+            "WindSpeedMPH": "__avg()",
+            "WindDirDegree": "__min()"
+        }
+    },
+
+    "output": [
+        {
+            "file": "path/to/output/file.json",
+            "encoding": "UTF-8",
+            "async": true
+        },
+        {
+            "$database": {
+                "type": "ORACLE",
+                "host": "",
+                "port": "",
+                "charset": ""
+            },
+            "encoding": "UTF-32",
+            "async": false
+        }
+    ]
+}
