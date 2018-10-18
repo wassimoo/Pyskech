@@ -1,6 +1,6 @@
 {
     "input": {
-        "url":"https://example.com/data/iris.csv",
+        "url":"https://raw.githubusercontent.com/wassimoo/Peskech/master/tests/data/NYWeather.csv",
         "format" : "CSV",
         "encoding" : "UTF-16",
         "async" : true
@@ -8,10 +8,16 @@
 
     "structure": {
         "EST, DewPoint": {
+            "$alias": "objectname",
             "$file": "path/to/class/file.py",
             "$class": "if_not_defined_filename_is_the_default_value",
-            "$load": "load_to_object",
-            "$extract": "extract_from_object"
+            "$load": "load_to_object()",
+            "$extract": "extract_from_object()",
+            "$args": {
+                "whole_object_alias": "$obj",
+                "specific_attr_alias": "$obj.attr",
+                "arg_alias_N": "$accesor"
+            }
         },
         "Humidity": 0.0,
         "Sea Level": {
