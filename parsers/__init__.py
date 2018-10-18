@@ -1,5 +1,5 @@
 #
-# Wrangler - Automated data wrangling for data scientists
+# Peskech - Automated data wrangling for data scientists
 # Copyright (C) 2018 Wassim Bougarfa
 #
 # This program is free software: you can redistribute it and/or modify

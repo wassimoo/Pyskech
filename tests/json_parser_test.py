@@ -1,5 +1,5 @@
 #
-# Wrangler - Automated data wrangling for data scientists
+# Peskech - Automated data wrangling for data scientists
 # Copyright (C) 2018 Wassim Bougarfa
 #
 # This program is free software: you can redistribute it and/or modify
@@ -73,7 +73,5 @@ class InputAttrExceptionsTest(unittest.TestCase):
         inputd = dict(url=url, format=_format)
         self.assertRaises(Exception, JsonParser().parse_input_data(inputd))
 
-
-
-if __name__ == '__main__':
-    pass
+class InputAttrTest(unittest.TestCase):
+    pass 
