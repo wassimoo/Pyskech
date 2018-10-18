@@ -10,7 +10,7 @@
         "EST, DewPoint": {
             "$alias": "objectname",
             "$file": "path/to/class/file.py",
-            "$class": "if_not_defined_filename_is_the_default_value",
+            "$class": "className",
             "$load": "load_to_object()",
             "$extract": "extract_from_object()",
             "$args": {
