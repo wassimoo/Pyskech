@@ -21,6 +21,7 @@
         },
         "Humidity": 0.0,
         "Sea Level": {
+            "$alias": "objectname",
             "$type": "float",
             "$default": 30,
             "$options": {
