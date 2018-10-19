@@ -1,0 +1,5 @@
+* Write Full Documentations
+* Add Detailed class-based exceptions
+* Add more test cases
+* Add more flexibility for the structuring files:
+    list-typed variables(either using array or comma spereated values).
