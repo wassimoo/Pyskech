@@ -1,5 +1,5 @@
 #
-# Peskech - Automated data wrangling for data scientists
+# Peskech - Automated data structuring for data scientists
 # Copyright (C) 2018 Wassim Bougarfa
 #
 # This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@ from parsers.json_parser import JsonParser
 import unittest
 
 
-class InputAttrExceptionsTest(unittest.TestCase):
+class InputExceptionsTest(unittest.TestCase):
     """
         Required Attributes:
             url, format
@@ -73,5 +73,31 @@ class InputAttrExceptionsTest(unittest.TestCase):
         inputd = dict(url=url, format=_format)
         self.assertRaises(Exception, JsonParser().parse_input_data(inputd))
 
-class InputAttrTest(unittest.TestCase):
-    pass 
+
+class InputTest(unittest.TestCase):
+    pass
+
+
+class ClassFileStructuringTest(unittest.TestCase):
+
+    @classmethod
+    def test_parse_inline_attributes(self):
+        data = {"Humidity": 0.0}
+        # TODO: Really test this
+        self.assertRaises(Exception, JsonParser().parse_structure(data))
+
+    @classmethod
+    def test_parse_inline_class(self):
+        data = {"{Navigation}": {"CloudCover": 0,
+                                 "WindSpeedMPH": "__avg()",
+                                 "WindDirDegree": "__min()"}}
+        # TODO: Stop doing this !
+        self.assertRaises(Exception, JsonParser().parse_structure(data))
+
+
+    @classmethod
+    def test_parse_class_file(self):
+        pass
+
+class ClassFileStructuringExceptionsTest(unittest.TestCase):
+    pass
