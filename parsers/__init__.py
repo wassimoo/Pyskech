@@ -1,5 +1,5 @@
 #
-# Peskech - Automated data wrangling for data scientists
+# Peskech - Automated data structuring for data scientists
 # Copyright (C) 2018 Wassim Bougarfa
 #
 # This program is free software: you can redistribute it and/or modify
@@ -14,6 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
 __all__ = [
