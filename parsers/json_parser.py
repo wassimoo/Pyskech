@@ -1,5 +1,5 @@
 #
-# Wrangler - Automated data wrangling for data scientists
+# Peskech - Automated data structuring for data scientists
 # Copyright (C) 2018 Wassim Bougarfa
 #
 # This program is free software: you can redistribute it and/or modify
@@ -35,6 +35,7 @@ class JsonParser(object):
         self.__file_path = file_path
         self.__file_content = {}
         self.__input = {}
+        self.__structure = {}
         if file_path != None:
             self.__loadFile()
 
@@ -106,3 +107,97 @@ class JsonParser(object):
         self.__input['async'] = input_data['format'] if type(
             input_data['format']) == bool else False
        ######################## ASYNC #######################
+
+    def parse_structure(self, structuring_data: dict = None):
+        """Parse and validate data structures.
+
+            Raises:
+                Exception: on invalide/unknown structure method
+
+        """
+        if structuring_data == None:
+            if self.__file_content.get('structure') == None:
+                raise Exception('No structure attribute provided')
+            else:
+                structuring_data = self.__file_content.get('structure')
+
+        ################# Structuring Methods ################
+        # class-file       ==> If $file parameter is found <==
+        # inline-class     ==>   If alias surronded by {}  <==
+        # inline-attribute ==>         otherwise           <==
+        ######################################################
+
+        for structure in structuring_data:
+            # NOTE: Overwrite existing structures referenced by the same key
+            # pure value given -> iniline_attribute
+            if type(structuring_data[structure]) != dict:
+                self.__structure.update(
+                    self._parse_inline_attributes(structuring_data[structure]))
+            elif structure[0] == '{' and structure[-1] == '}':
+                self.__structure.update(
+                    self._parse_inline_class(structuring_data[structure]))
+            elif structuring_data[structure].get('$file') != None:
+                self.__structure.update(self._parse_class_file(self._splitheaders(
+                    structure), structuring_data[structure]))
+            else:
+                raise Exception('unknown structuring method at ' + structure)
+
+    def _parse_class_file(self, headers: list, params: dict) -> dict:
+        """Parse a class-file structuring method.
+
+        Args: 
+            headers: specified headers attributes.
+            params: Structuring rules
+
+        Raises:
+            Exception:
+                * No $file parameter specified.
+                * No $class parameter specified.
+                * Invalid argument alias name.
+        """
+        io_params = {}  # provided by $load, $extract, $args
+        # No need to check, Wouldn't call this method if didn't exist.
+        _file = params.get('$file')
+        _class = params.get('$class')
+        if _class == None:
+            raise Exception(
+                'Attempted to use class-file structuring without a specified class, consider using $class parameter')
+        # use header if no object alias has been specified,
+        # throw Exception if header groupe is used.
+        io_params['alias'] = params.get('$alias')
+        if io_params['alias'] == None:
+            if len(headers) != 1:
+                raise Exception(
+                    'Attempted to use class-file structuring based on more than one header, consider using $alias')
+            else:
+                io_params['alias'] = headers[0]
+
+        io_params['load'] = params.get('$load')
+        io_params['extract'] = params.get('$extract')
+
+        ####### Start parsing Args #######
+        # Eliminate duplicated aliases,
+        # Validate Aliases,
+        # Args Values are Evaluated by the worker.
+        ##################################
+        if params.get('$args') != None:
+            # construct with header(s) value(s)
+            io_params['args'] = dict([(x, '$obj.'+x) for x in headers])
+            for arg_alias in params['$args']:
+                # Check argument alias validity:
+                # Either it exists in final args dict or passes test validity.
+                if io_params['args'].get(arg_alias) != None or arg_alias.isidentifier():
+                    io_params['args'][arg_alias] = params['$args'][arg_alias]
+                else:
+                    raise Exception(
+                        'Invalid argument alias given {}'.format(arg_alias))
+        return {io_params['alias']: (_file, _class, io_params)}
+
+    def _parse_inline_class(self, params: dict) -> dict:
+        print('From _parse_inline_class : Still working on this ...')
+
+    def _parse_inline_attributes(self, params: dict) -> dict:
+        raise Exception('From _parse_inline_attributes : Still working on this ...')
+
+    def _splitheaders(self, headers: str) -> list:
+        return [x.strip() for x in headers.split(',')]
